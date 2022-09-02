@@ -120,7 +120,7 @@ function mostrarT3P1(){
             <input class="retangulo" placeholder="qntDePerguntas">Quantidade de perguntas do quizz</input>
             <input class="retangulo" placeholder="qntDeNiveis">Quantidade de níveis do quizz</input>
         </div>
-        <button class="retangulovermelho" onclick="prosseguirParte2">Prosseguir pra criar perguntas</button>
+        <button class="retangulovermelho" onclick="validarEChamarParte2()">Prosseguir pra criar perguntas</button>
     </div>
     `;
 
@@ -133,7 +133,9 @@ function validarEChamarParte2 (){
     confereNumero(qntDePerguntas);
     confereNumero(qntDeNumeros);
 
-    if()
+    if(){
+        //chama a função q mostra a parte 2
+    }
 }
 
 //função para mostrar tela 3 parte 2
@@ -151,7 +153,7 @@ function confereURL(){
 function confereNumero(variavel){
     typeof(variavel);
     if(typeof!="number"){
-        alert("digite um número inteiro entre 1 e 6 para a quantidade");
+        alert("Digite um número inteiro entre 1 e 6 para a quantidade");
         return false;
     }
     return true;
