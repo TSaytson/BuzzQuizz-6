@@ -101,6 +101,14 @@ getQuizzes();
 
 // tela 3 ------------------------------------------------------------------------
 
+let variavel;
+
+let tituloDoQuizz=[];
+let urlImgQuizz=[];
+let qntDePerguntas;
+let qntDeNiveis;
+
+
 //função para mostrar tela 3 parte 1
 function mostrarT3P1(){
     `
@@ -112,18 +120,39 @@ function mostrarT3P1(){
             <input class="retangulo" placeholder="qntDePerguntas">Quantidade de perguntas do quizz</input>
             <input class="retangulo" placeholder="qntDeNiveis">Quantidade de níveis do quizz</input>
         </div>
-        <button class="retangulovermelho">Prosseguir pra criar perguntas</button>
-    </input>
-    `
+        <button class="retangulovermelho" onclick="prosseguirParte2">Prosseguir pra criar perguntas</button>
+    </div>
+    `;
+
 }
 
+//função para validar os dados e ir para a parte 2 da tela 3
+function validarEChamarParte2 (){
+    
+    confereURL(urlImgQuizz);
+    confereNumero(qntDePerguntas);
+    confereNumero(qntDeNumeros);
 
-
+    if()
+}
 
 //função para mostrar tela 3 parte 2
 //função para mostrar tela 3 parte 3
 //função para mostrar tela 3 parte 4
 
 //função para conferir as URLs
+function confereURL(){
+    return true;
+}
+
 //função para verificar e validar os dados
 
+//função para conferir se é numero
+function confereNumero(variavel){
+    typeof(variavel);
+    if(typeof!="number"){
+        alert("digite um número inteiro entre 1 e 6 para a quantidade");
+        return false;
+    }
+    return true;
+}
