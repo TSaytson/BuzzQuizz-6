@@ -1,13 +1,10 @@
 * {
     box-sizing: border-box;
 }
-
 body {
     background-color: #E5E5E5;
     /*overflow: scroll;*/
 }
-
-
 /*---------------*/
 /*topo com o nome buzzquizz*/
 .top-bar {
@@ -28,7 +25,6 @@ body {
     font-weight: 700;
     font-size: 37px;
 }
-
 /*conteudo principal */
 .conteudo-principal {
     margin-top: 150px;
@@ -51,7 +47,6 @@ body {
     border-radius: 5px;
     background-color: #FAFAFA;
 }
-
 .criar-quizz>div {
     font-family: 'Roboto';
     font-size: 20px;
@@ -59,7 +54,6 @@ body {
     width: 250px;
     text-align: center;
 }
-
 .btn-criarquizz {
     height: 40px;
     border: 1px dashed #EC362D;
@@ -134,7 +128,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-
 .quizz-logo h1 {
     width: 85%;
     font-family: 'Roboto';

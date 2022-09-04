@@ -1,4 +1,6 @@
 const URL_API = 'https://mock-api.driven.com.br/api/v4/buzzquizz/';
+
+// tela 1 ------------------------------------------------------------------------
 const quizzes = [];
 
 
@@ -119,3 +121,66 @@ function selectQuizz(seletor) {
 }
 
 getQuizzes();
+
+
+// tela 2 ------------------------------------------------------------------------
+
+// tela 3 ------------------------------------------------------------------------
+
+let variavel;
+
+let tituloDoQuizz=[];
+let urlImgQuizz=[];
+let qntDePerguntas;
+let qntDeNiveis;
+
+
+//função para mostrar tela 3 parte 1
+function mostrarT3P1(){
+    `
+    <div class="tela3p1">
+        <div class="titulot3">Comece pelo começo<div>
+        <div class="retangulao">
+            <input class="retangulo" placeholder="titudoDoQuizz">Título do seu quizz</input>
+            <input class="retangulo" placeholder="urlImgQuizz">URL da imagem do seu quizz</input>
+            <input class="retangulo" placeholder="qntDePerguntas">Quantidade de perguntas do quizz</input>
+            <input class="retangulo" placeholder="qntDeNiveis">Quantidade de níveis do quizz</input>
+        </div>
+        <button class="retangulovermelho" onclick="validarEChamarParte2()">Prosseguir pra criar perguntas</button>
+    </div>
+    `;
+
+}
+
+//função para validar os dados e ir para a parte 2 da tela 3
+function validarEChamarParte2 (){
+    
+    confereURL(urlImgQuizz);
+    confereNumero(qntDePerguntas);
+    confereNumero(qntDeNumeros);
+
+    if(){
+        //chama a função q mostra a parte 2
+    }
+}
+
+//função para mostrar tela 3 parte 2
+//função para mostrar tela 3 parte 3
+//função para mostrar tela 3 parte 4
+
+//função para conferir as URLs
+function confereURL(){
+    return true;
+}
+
+//função para verificar e validar os dados
+
+//função para conferir se é numero
+function confereNumero(variavel){
+    typeof(variavel);
+    if(typeof!="number"){
+        alert("Digite um número inteiro entre 1 e 6 para a quantidade");
+        return false;
+    }
+    return true;
+}
