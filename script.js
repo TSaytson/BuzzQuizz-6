@@ -1,15 +1,12 @@
-const URL_API = 'https://mock-api.driven.com.br/api/v4/buzzquizz/';
-
-// tela 1 ------------------------------------------------------------------------
+const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 const quizzes = [];
-
+let indiceQuizzSelecionado = null;
 
 function showQuizzes(promessa) {
-    const elementoQuizz = document.querySelector('.quizzes-list');
-    elementoQuizz.innerHTML = '';
+    const elementoQuizz = document.querySelector(".quizzes-list");
+    elementoQuizz.innerHTML = "";
 
-    for (let i = 0; i < promessa.data.length; i++)
-        quizzes.push(promessa.data[i]);
+    for (let i = 0; i < promessa.data.length; i++) quizzes.push(promessa.data[i]);
 
     for (let i = 0; i < quizzes.length; i++) {
         elementoQuizz.innerHTML += `<div class="quizz" 
@@ -17,16 +14,16 @@ function showQuizzes(promessa) {
             <p>
                 ${quizzes[i].title} 
             </p>
-        </div>`
+        </div>`;
     }
 
-    const elementos = document.querySelectorAll('.quizz');
+    const elementos = document.querySelectorAll(".quizz");
 
     for (let i = 0; i < elementos.length; i++) {
         elementos[i].style.backgroundImage = `linear-gradient(to bottom, 
             rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.8))
         , url(${quizzes[i].image})`;
-        elementos[i].style.backgroundSize = "100% 100%";
+        elementos[i].style.backgroundSize = "320px 180px";
     }
 }
 
@@ -35,126 +32,146 @@ function getQuizzes() {
     promessa.then(showQuizzes);
 }
 
-function iniciaQuizz(indiceQuizz) {
-    const elementoEscondido = document.querySelector('.conteudo-principal');
-    elementoEscondido.classList.add('hidden');
-    const quizzSelecionado = document.querySelector('.quizz-selected');
-    quizzSelecionado.classList.remove('hidden');
-    const logo = document.querySelector('.quizz-logo');
+function verifyAnswer(seletor) {
+	
+	let correctAnswerIndex = null;
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++) 
+		if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[i].isCorrectAnswer)
+            correctAnswerIndex = i;
+	for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++) {
+		if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[correctAnswerIndex].text ==
+			seletor.parentNode.children[i].firstElementChild.nextElementSibling.innerText) {
+				
+			seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:green";
+			if (seletor.parentNode.children[i] !== seletor)
+				seletor.parentNode.children[i].style.opacity = "0.4";
+		} else {
+			seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:red";
+			if (seletor.parentNode.children[i] !== seletor)
+				seletor.parentNode.children[i].style.opacity = "0.4";
+		}
+	}
+	
+	for (let i = 0; i < seletor.parentNode.children.length; i++)
+        seletor.parentNode.children[i].removeAttribute("onclick");
+}
+
+
+function buildQuestionsStructure(indiceQuizzSelecionado) {
+    const quizzSelected = document.querySelector(".quizz-selected");
+    quizzSelected.innerHTML = "";
+    quizzSelected.innerHTML += `<div class="quizz-logo">
+    <h1></h1>
+    </div>`;
+    const logo = document.querySelector(".quizz-logo");
     logo.scrollIntoView({
         block: "end",
         inline: "start",
         behavior: "smooth"
     });
-    logo.firstElementChild.innerHTML = `${quizzes[indiceQuizz].title}`;
+    logo.firstElementChild.innerHTML = `${quizzes[indiceQuizzSelecionado].title}`;
     logo.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.57), 
-rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
-    logo.style.backgroundSize = "25% 100%";
-    const perguntaQuizz = document.querySelector('.quizz-question');
-    perguntaQuizz.innerHTML = '';
+rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
+    logo.style.backgroundSize = "360px 230px";
 
-    for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
-        perguntaQuizz.innerHTML += `<div class="quizz-question-title">
-            <h1>
-                ${quizzes[indiceQuizz].questions[i].title}
-            </h1>
-        </div>
-        <div class="quizz-selected-images">
-            <div>
-                <div class="quizz-selected-option">
-                </div>
-                <p>
-                    ${quizzes[indiceQuizz].questions[i].answers[0].text}
-                </p>
-                <div class="quizz-selected-option">
-                </div>
-                <p>
-                    ${quizzes[indiceQuizz].questions[i].answers[1].text}
-                </p>
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
+        quizzSelected.innerHTML += `
+        <div class="quizz-question">
+            <div class="quizz-question-title">
+                <h1>
+                    ${quizzes[indiceQuizzSelecionado].questions[i].title}
+                </h1>
+            </div>
+            <div class="quizz-selected-images">
             </div>
         </div>`;
     }
-    const imageQuizz = document.querySelector('.quizz-question-title');
-    imageQuizz.style.backgroundColor = quizzes[indiceQuizz].questions[0].color;
-    const imagesQuestionsQuizz = document.querySelectorAll('.quizz-selected-option')
-    for (let i = 0; i < imagesQuestionsQuizz.length; i++) {
-        imagesQuestionsQuizz[i].style.backgroundImage = `${quizzes[indiceQuizz].questions[i].image}`;
+
+    const quizzQuestions = document.querySelectorAll(".quizz-question");
+
+    console.log(`quizzQuestions.length: `, quizzQuestions.length);
+
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
+        for (
+            j = 0;
+            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
+            j++
+        ) {
+            quizzQuestions[i].firstElementChild.nextElementSibling.innerHTML += `
+            <div onclick="verifyAnswer(this)">
+                <div class="quizz-selected-option">
+                </div>
+                <p>
+                </p>
+            </div>`;
+            quizzQuestions[
+                i
+            ].firstElementChild.style.backgroundColor = `${quizzes[indiceQuizzSelecionado].questions[i].color}`;
+        }
     }
 
+    const questionsContent = document.querySelectorAll(".quizz-selected-option");
+    let k = 0,
+        randomNumber = 0;
+
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
+        let randomNumbers = [];
+        for (
+            let j = 0;
+            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
+            j++
+        )
+            randomNumbers.push(j);
+
+        for (
+            let j = quizzes[indiceQuizzSelecionado].questions[i].answers.length;
+            j;
+
+        ) {
+            randomNumber = (Math.random() * j--) | 0;
+            tmp = randomNumbers[randomNumber];
+            randomNumbers[randomNumber] = randomNumbers[j];
+            randomNumbers[j] = tmp;
+        }
+
+        for (
+            let j = 0;
+            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
+            j++
+        ) {
+            questionsContent[k].style.backgroundImage = `
+        url(${quizzes[indiceQuizzSelecionado].questions[i].answers[randomNumbers[j]]
+                    .image
+                })`;
+
+            questionsContent[k].style.backgroundSize = "340px 200px";
+            questionsContent[k].style.cursor = "pointer";
+
+            questionsContent[k].nextElementSibling.innerHTML = `
+        ${quizzes[indiceQuizzSelecionado].questions[i].answers[randomNumbers[j]]
+                    .text
+                }`;
+            k++;
+        }
+    }
+}
+
+function startQuizz(indiceQuizzSelecionado) {
+    const elementoEscondido = document.querySelector(".conteudo-principal");
+    elementoEscondido.classList.add("hidden");
+    const quizzSelecionado = document.querySelector(".quizz-selected");
+    quizzSelecionado.classList.remove("hidden");
+
+    buildQuestionsStructure(indiceQuizzSelecionado);
 }
 
 function selectQuizz(seletor) {
-
     const quizzId = Number(seletor.id);
     for (let i = 0; i < quizzes.length; i++)
         if (quizzId === quizzes[i].id) {
-            const indiceQuizzSelecionado = i;
-            iniciaQuizz(indiceQuizzSelecionado);
+            indiceQuizzSelecionado = i;
+            startQuizz(indiceQuizzSelecionado);
         }
-
 }
 
 getQuizzes();
-
-
-// tela 2 ------------------------------------------------------------------------
-
-// tela 3 ------------------------------------------------------------------------
-
-let variavel;
-
-let tituloDoQuizz=[];
-let urlImgQuizz=[];
-let qntDePerguntas;
-let qntDeNiveis;
-
-
-//função para mostrar tela 3 parte 1
-function mostrarT3P1(){
-    `
-    <div class="tela3p1">
-        <div class="titulot3">Comece pelo começo<div>
-        <div class="retangulao">
-            <input class="retangulo" placeholder="titudoDoQuizz">Título do seu quizz</input>
-            <input class="retangulo" placeholder="urlImgQuizz">URL da imagem do seu quizz</input>
-            <input class="retangulo" placeholder="qntDePerguntas">Quantidade de perguntas do quizz</input>
-            <input class="retangulo" placeholder="qntDeNiveis">Quantidade de níveis do quizz</input>
-        </div>
-        <button class="retangulovermelho" onclick="validarEChamarParte2()">Prosseguir pra criar perguntas</button>
-    </div>
-    `;
-
-}
-
-//função para validar os dados e ir para a parte 2 da tela 3
-function validarEChamarParte2 (){
-    
-    confereURL(urlImgQuizz);
-    confereNumero(qntDePerguntas);
-    confereNumero(qntDeNumeros);
-
-    if(){
-        //chama a função q mostra a parte 2
-    }
-}
-
-//função para mostrar tela 3 parte 2
-//função para mostrar tela 3 parte 3
-//função para mostrar tela 3 parte 4
-
-//função para conferir as URLs
-function confereURL(){
-    return true;
-}
-
-//função para verificar e validar os dados
-
-//função para conferir se é numero
-function confereNumero(variavel){
-    typeof(variavel);
-    if(typeof!="number"){
-        alert("Digite um número inteiro entre 1 e 6 para a quantidade");
-        return false;
-    }
-    return true;
-}
