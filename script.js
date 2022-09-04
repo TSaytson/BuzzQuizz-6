@@ -1,6 +1,7 @@
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 const quizzes = [];
 let indiceQuizzSelecionado = null;
+let questionsAnswered = 0;
 
 function showQuizzes(promessa) {
     const elementoQuizz = document.querySelector(".quizzes-list");
@@ -154,6 +155,9 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
             k++;
         }
     }
+	
+    for (let i = quizzes[indiceQuizzSelecionado].questions.length - 1; i > 0; i--)
+        quizzQuestions[i].classList.add('hidden');
 }
 
 function startQuizz(indiceQuizzSelecionado) {
