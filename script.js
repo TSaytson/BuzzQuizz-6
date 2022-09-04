@@ -24,7 +24,7 @@ function showQuizzes(promessa) {
         elementos[i].style.backgroundImage = `linear-gradient(to bottom, 
             rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.8))
         , url(${quizzes[i].image})`;
-        elementos[i].style.backgroundSize = "100% 100%";
+        elementos[i].style.backgroundSize = "320px 180px";
     }
 }
 
@@ -48,7 +48,7 @@ function buildQuestionsStructure(indiceQuizz) {
     logo.firstElementChild.innerHTML = `${quizzes[indiceQuizz].title}`;
     logo.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.57), 
 rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
-    logo.style.backgroundSize = "25% 100%";
+    logo.style.backgroundSize = "360px 230px";
 
     for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
         quizzSelected.innerHTML += `
@@ -64,7 +64,7 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
     }
 
     const quizzQuestions = document.querySelectorAll('.quizz-question');
-    let k = 0;
+
     console.log(`quizzQuestions.length: `, quizzQuestions.length);
 
     for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
@@ -76,7 +76,7 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
                 <p>
                 </p>
             </div>`;
-            k++;
+            quizzQuestions[i].firstElementChild.style.backgroundColor = `${quizzes[indiceQuizz].questions[i].color}`;
         }
     }
 
@@ -87,7 +87,7 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
             questionsContent[k].style.backgroundImage = `
         url(${quizzes[indiceQuizz].questions[i].answers[j].image})`;
 
-            questionsContent[k].style.backgroundSize = "100% 100%";
+            questionsContent[k].style.backgroundSize = "320px 180px";
             questionsContent[k].style.cursor = "pointer";
 
             questionsContent[k].nextElementSibling.innerHTML = `
