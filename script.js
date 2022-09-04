@@ -33,12 +33,13 @@ function getQuizzes() {
     promessa.then(showQuizzes);
 }
 
-function iniciaQuizz(indiceQuizz) {
-    const elementoEscondido = document.querySelector('.conteudo-principal');
-    elementoEscondido.classList.add('hidden');
-    const quizzSelecionado = document.querySelector('.quizz-selected');
-    quizzSelecionado.classList.remove('hidden');
-    const logo = document.querySelector('.quizz-logo');
+function buildQuestionsStructure(indiceQuizz) {
+    const quizzSelected = document.querySelector(".quizz-selected");
+    quizzSelected.innerHTML = "";
+    quizzSelected.innerHTML += `<div class="quizz-logo">
+    <h1></h1>
+    </div>`
+    const logo = document.querySelector(".quizz-logo");
     logo.scrollIntoView({
         block: "end",
         inline: "start",
@@ -48,36 +49,61 @@ function iniciaQuizz(indiceQuizz) {
     logo.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.57), 
 rgba(0,0,0,0.57)), url(${quizzes[indiceQuizz].image})`;
     logo.style.backgroundSize = "25% 100%";
-    const perguntaQuizz = document.querySelector('.quizz-question');
-    perguntaQuizz.innerHTML = '';
 
     for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
-        perguntaQuizz.innerHTML += `<div class="quizz-question-title">
-            <h1>
-                ${quizzes[indiceQuizz].questions[i].title}
-            </h1>
-        </div>
-        <div class="quizz-selected-images">
-            <div>
-                <div class="quizz-selected-option">
-                </div>
-                <p>
-                    ${quizzes[indiceQuizz].questions[i].answers[0].text}
-                </p>
-                <div class="quizz-selected-option">
-                </div>
-                <p>
-                    ${quizzes[indiceQuizz].questions[i].answers[1].text}
-                </p>
+        quizzSelected.innerHTML += `
+        <div class="quizz-question">
+            <div class="quizz-question-title">
+                <h1>
+                    ${quizzes[indiceQuizz].questions[i].title}
+                </h1>
+            </div>
+            <div class="quizz-selected-images">
             </div>
         </div>`;
     }
-    const imageQuizz = document.querySelector('.quizz-question-title');
-    imageQuizz.style.backgroundColor = quizzes[indiceQuizz].questions[0].color;
-    const imagesQuestionsQuizz = document.querySelectorAll('.quizz-selected-option')
-    for (let i = 0; i < imagesQuestionsQuizz.length; i++) {
-        imagesQuestionsQuizz[i].style.backgroundImage = `${quizzes[indiceQuizz].questions[i].image}`;
+
+    const quizzQuestions = document.querySelectorAll('.quizz-question');
+    let k = 0;
+    console.log(`quizzQuestions.length: `, quizzQuestions.length);
+
+    for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
+        for (j = 0; j < quizzes[indiceQuizz].questions[i].answers.length; j++) {
+            quizzQuestions[i].firstElementChild.nextElementSibling.innerHTML += `
+            <div>
+                <div onclick="verifyAnswer(this)" class="quizz-selected-option">
+                </div>
+                <p>
+                </p>
+            </div>`;
+            k++;
+        }
     }
+
+    const questionsContent = document.querySelectorAll('.quizz-selected-option');
+    k = 0;
+    for (let i = 0; i < quizzes[indiceQuizz].questions.length; i++) {
+        for (let j = 0; j < quizzes[indiceQuizz].questions[i].answers.length; j++) {
+            questionsContent[k].style.backgroundImage = `
+        url(${quizzes[indiceQuizz].questions[i].answers[j].image})`;
+
+            questionsContent[k].style.backgroundSize = "100% 100%";
+            questionsContent[k].style.cursor = "pointer";
+
+            questionsContent[k].nextElementSibling.innerHTML = `
+        ${quizzes[indiceQuizz].questions[i].answers[j].text}`;
+            k++;
+        }
+    }
+}
+
+function startQuizz(indiceQuizz) {
+    const elementoEscondido = document.querySelector(".conteudo-principal");
+    elementoEscondido.classList.add("hidden");
+    const quizzSelecionado = document.querySelector(".quizz-selected");
+    quizzSelecionado.classList.remove("hidden");
+
+    buildQuestionsStructure(indiceQuizz);
 
 }
 
@@ -87,7 +113,7 @@ function selectQuizz(seletor) {
     for (let i = 0; i < quizzes.length; i++)
         if (quizzId === quizzes[i].id) {
             const indiceQuizzSelecionado = i;
-            iniciaQuizz(indiceQuizzSelecionado);
+            startQuizz(indiceQuizzSelecionado);
         }
 
 }

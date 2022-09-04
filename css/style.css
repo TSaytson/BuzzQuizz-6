@@ -175,12 +175,16 @@ body {
 .quizz-selected-images {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     width: 95%;
     height: 60%;
 }
 
 .quizz-selected-images>div {
+    margin-top: 20px;
+    height: 200px;
     width: 48%;
+    margin-bottom: 30px;
 }
 
 .quizz-selected-images>div p {
@@ -188,11 +192,13 @@ body {
     font-family: 'Roboto';
     font-weight: 700;
     font-size: 20px;
+    max-width: 300px;
+    overflow: hidden;
 }
 
 .quizz-selected-option {
-    margin-top: 20px;
-    height: 50%;
+
+    height: 95%;
 }
 
 
