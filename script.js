@@ -33,26 +33,26 @@ function getQuizzes() {
 }
 
 function verifyAnswer(seletor) {
-	
-	let correctAnswerIndex = null;
-    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++) 
-		if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[i].isCorrectAnswer)
+
+    let correctAnswerIndex = null;
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++)
+        if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[i].isCorrectAnswer)
             correctAnswerIndex = i;
-	for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++) {
-		if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[correctAnswerIndex].text ==
-			seletor.parentNode.children[i].firstElementChild.nextElementSibling.innerText) {
-				
-			seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:green";
-			if (seletor.parentNode.children[i] !== seletor)
-				seletor.parentNode.children[i].style.opacity = "0.4";
-		} else {
-			seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:red";
-			if (seletor.parentNode.children[i] !== seletor)
-				seletor.parentNode.children[i].style.opacity = "0.4";
-		}
-	}
-	
-	for (let i = 0; i < seletor.parentNode.children.length; i++)
+    for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers.length; i++) {
+        if (quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[correctAnswerIndex].text ==
+            seletor.parentNode.children[i].firstElementChild.nextElementSibling.innerText) {
+
+            seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:green";
+            if (seletor.parentNode.children[i] !== seletor)
+                seletor.parentNode.children[i].style.opacity = "0.4";
+        } else {
+            seletor.parentNode.children[i].firstElementChild.nextElementSibling.style = "color:red";
+            if (seletor.parentNode.children[i] !== seletor)
+                seletor.parentNode.children[i].style.opacity = "0.4";
+        }
+    }
+
+    for (let i = 0; i < seletor.parentNode.children.length; i++)
         seletor.parentNode.children[i].removeAttribute("onclick");
 }
 
