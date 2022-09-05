@@ -33,6 +33,68 @@ function getQuizzes() {
     promessa.then(showQuizzes);
 }
 
+function scrollQuestion() {
+    document.querySelectorAll('.quizz-question')[questionsAnswered].scrollIntoView({
+        block: "end",
+        inline: "start",
+        behavior: "smooth"
+    })
+}
+
+function resultCalc(result) {
+    
+    let indexResultLevel = 0;
+    for (let i = quizzes[indiceQuizzSelecionado].levels.length - 1; i >= 0; i--) {
+        if (quizzes[indiceQuizzSelecionado].levels[i].minValue <= result) {
+            return indexResultLevel = i;
+        }
+    }
+}
+
+function finishQuizz() {
+    if (questionsAnswered == quizzes[indiceQuizzSelecionado].questions.length) {
+        const quizzSelected = document.querySelector('.quizz-selected');
+        let result = (correctAnswers / questionsAnswered).toFixed(2) * 100;
+        const indexResultLevel = resultCalc(result);
+                
+        
+        quizzSelected.innerHTML += `
+        <div class="quizz-question hidden">
+            <div class="quizz-question-title">
+                <h1 data-identifier="quizz-result">
+                    ${result}% de acerto:
+                    ${quizzes[indiceQuizzSelecionado].levels[indexResultLevel].title}
+                </h1>
+            </div>
+            <div class="quizz-selected-images">
+                <div class="quizz-selected-option">
+                </div>
+                <p>
+                </p>
+            </div>
+        </div>`;
+        const quizzFinish = document.querySelectorAll('.quizz-selected-images');
+
+        quizzFinish[quizzFinish.length - 1].classList.add('quizz-finish');
+        quizzFinish[quizzFinish.length - 1].style.height = "100%";
+        quizzFinish[quizzFinish.length - 1].style.width = "98%";
+
+        quizzFinish[quizzFinish.length - 1].firstElementChild.style.backgroundImage = `url(${quizzes[indiceQuizzSelecionado].levels[indexResultLevel].image})`;
+        quizzFinish[quizzFinish.length - 1].firstElementChild.style.backgroundSize = "100% 100%";
+        quizzFinish[quizzFinish.length - 1].firstElementChild.style.height = "95%";
+        
+        quizzFinish[quizzFinish.length - 1].firstElementChild.nextElementSibling.innerHTML =
+            `${quizzes[indiceQuizzSelecionado].levels[indexResultLevel].text}`;
+        
+        quizzFinish[quizzFinish.length - 1].previousElementSibling.style.height = "100px";
+        quizzFinish[quizzFinish.length - 1].previousElementSibling.style.width = "98%";
+        quizzFinish[quizzFinish.length - 1].parentNode.style.height = "320px";
+        
+        setTimeout(() => document.querySelectorAll('.quizz-question')[questionsAnswered].classList.remove('hidden'), 2000);
+        setTimeout(scrollQuestion, 2000);
+    }
+}
+    
 function verifyAnswer(seletor) {
 
     let correctAnswerIndex = null;
@@ -55,6 +117,16 @@ function verifyAnswer(seletor) {
 
     for (let i = 0; i < seletor.parentNode.children.length; i++)
         seletor.parentNode.children[i].removeAttribute("onclick");
+	if (seletor.firstElementChild.nextElementSibling.innerText ==
+        quizzes[indiceQuizzSelecionado].questions[questionsAnswered].answers[correctAnswerIndex].text)
+        correctAnswers++;
+    questionsAnswered++;
+    
+    if (questionsAnswered < quizzes[indiceQuizzSelecionado].questions.length) {
+        setTimeout(() => document.querySelectorAll('.quizz-question')[questionsAnswered].classList.remove('hidden'), 2000);
+        setTimeout(scrollQuestion, 2000);
+    }
+    finishQuizz();
 }
 
 
@@ -93,11 +165,7 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
     console.log(`quizzQuestions.length: `, quizzQuestions.length);
 
     for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
-        for (
-            j = 0;
-            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
-            j++
-        ) {
+        for (j = 0; j < quizzes[indiceQuizzSelecionado].questions[i].answers.length; j++) {
             quizzQuestions[i].firstElementChild.nextElementSibling.innerHTML += `
             <div onclick="verifyAnswer(this)">
                 <div class="quizz-selected-option">
@@ -105,9 +173,8 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
                 <p>
                 </p>
             </div>`;
-            quizzQuestions[
-                i
-            ].firstElementChild.style.backgroundColor = `${quizzes[indiceQuizzSelecionado].questions[i].color}`;
+            quizzQuestions[i].firstElementChild.style.backgroundColor = 
+			`${quizzes[indiceQuizzSelecionado].questions[i].color}`;
         }
     }
 
@@ -117,41 +184,27 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
 
     for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
         let randomNumbers = [];
-        for (
-            let j = 0;
-            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
-            j++
-        )
+        for (let j = 0; j < quizzes[indiceQuizzSelecionado].questions[i].answers.length; j++)
             randomNumbers.push(j);
 
-        for (
-            let j = quizzes[indiceQuizzSelecionado].questions[i].answers.length;
-            j;
-
-        ) {
+        for (let j = quizzes[indiceQuizzSelecionado].questions[i].answers.length; j;) {
             randomNumber = (Math.random() * j--) | 0;
             tmp = randomNumbers[randomNumber];
             randomNumbers[randomNumber] = randomNumbers[j];
             randomNumbers[j] = tmp;
         }
 
-        for (
-            let j = 0;
-            j < quizzes[indiceQuizzSelecionado].questions[i].answers.length;
-            j++
-        ) {
+        for (let j = 0; j < quizzes[indiceQuizzSelecionado].questions[i].answers.length; j++) {
             questionsContent[k].style.backgroundImage = `
         url(${quizzes[indiceQuizzSelecionado].questions[i].answers[randomNumbers[j]]
                     .image
                 })`;
 
-            questionsContent[k].style.backgroundSize = "340px 200px";
+            questionsContent[k].style.backgroundSize = "100% 100%";
             questionsContent[k].style.cursor = "pointer";
 
             questionsContent[k].nextElementSibling.innerHTML = `
-        ${quizzes[indiceQuizzSelecionado].questions[i].answers[randomNumbers[j]]
-                    .text
-                }`;
+        ${quizzes[indiceQuizzSelecionado].questions[i].answers[randomNumbers[j]].text}`;
             k++;
         }
     }
