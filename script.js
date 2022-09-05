@@ -194,7 +194,6 @@ rgba(0,0,0,0.57)), url(${quizzes[indiceQuizzSelecionado].image})`;
 
     const quizzQuestions = document.querySelectorAll(".quizz-question");
 
-    console.log(`quizzQuestions.length: `, quizzQuestions.length);
 
     for (let i = 0; i < quizzes[indiceQuizzSelecionado].questions.length; i++) {
         for (j = 0; j < quizzes[indiceQuizzSelecionado].questions[i].answers.length; j++) {
