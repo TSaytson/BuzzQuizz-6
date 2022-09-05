@@ -2,6 +2,7 @@ const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 const quizzes = [];
 let indiceQuizzSelecionado = null;
 let questionsAnswered = 0;
+let correctAnswers = 0;
 
 function showQuizzes(promessa) {
     const elementoQuizz = document.querySelector(".quizzes-list");
